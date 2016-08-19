@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AudioManager</string>
+    <string name="email_hint">Enter your e-mail address</string>
+    <string name="pw_hint">Enter your password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="continue_free">Continue as free user</string>
+    <string name="no_data">No List Data Available</string>
+    <string name="enter_ip">Please enter ip-address</string>
+    <string name="set_ip">Set ip-address</string>
+</resources>
