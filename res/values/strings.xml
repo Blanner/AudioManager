@@ -7,5 +7,6 @@
     <string name="continue_free">Continue as free user</string>
     <string name="no_data">No List Data Available</string>
     <string name="enter_ip">Please enter ip-address</string>
+    <string name="enter_ip_hint">Enter ip-address</string>
     <string name="set_ip">Set ip-address</string>
 </resources>

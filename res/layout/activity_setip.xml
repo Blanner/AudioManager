@@ -10,25 +10,23 @@
     android:background="#f5f5f5">
 
     <TextView
-        style="@style/BlackLabel"
         android:id="@+id/textView_enterIp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:hint="@string/enter_ip"
         android:textColor="#000000"
-        android:textSize="25dp" />
+        android:textSize="25sp" />
 
     <EditText
         android:id="@+id/editText_enterIp"
+        android:inputType="text"
+        android:hint="@string/enter_ip_hint"
         android:singleLine="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_setIp"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/set_ip"/>
