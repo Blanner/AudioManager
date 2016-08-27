@@ -3,11 +3,14 @@ package bll.scg.de.audiomanager.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -22,21 +25,27 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import bll.scg.de.audiomanager.R;
+import bll.scg.de.audiomanager.activity.SignInActivity;
+import bll.scg.de.audiomanager.activity.SignUpActivity;
+import bll.scg.de.audiomanager.application.UrlHolder;
 
 /**
  * Created by Simon C. Gorissen on 18.08.2016.
  */
 public class VolleyAdapter //Singleton class
 {
+    private final String TAG = VolleyAdapter.class.getSimpleName();
+
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
 
     private static VolleyAdapter mInstance;
     private static Context mContext;
-
-    private String URL = "http://www.google.com";
 
     /*
      * Constructor
@@ -51,9 +60,7 @@ public class VolleyAdapter //Singleton class
 
     }
 
-    /*
-     * Instance Getter
-     */
+    //Instance Getter
     public static synchronized VolleyAdapter getInstance(Context context)
     {
         if(mInstance == null)
@@ -63,63 +70,33 @@ public class VolleyAdapter //Singleton class
         return mInstance;
     }
 
-    /*
-     * Request Methods
-     */
-    public void makeImageRequest(final ImageView displayImageView, final String URL)
-    {
-        ImageRequest request = new ImageRequest(URL,
-                new Response.Listener<Bitmap>()
-                {
-                    @Override
-                    public void onResponse(Bitmap bitmap)
-                    {
-                        displayImageView.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, null, Bitmap.Config.RGB_565, //MaxWidth, MaxHeight, scaleType, decodeConfig
-                new Response.ErrorListener()
-                {
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        displayImageView.setImageResource(R.mipmap.missing_image);
-                    }
-                }
-        );
-        addToRequestQueue(request);
-    }
 
-    public void makeJsonRequest(final TextView displayImageView, final String URL)
+    public void signUserIn(final SignInActivity activity, String email, String password)
     {
-        JsonObjectRequest jsonObjRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
-                        displayImageView.setText("Response: " + response.toString());
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        //TODO handle error
-                    }
-                }
-        );
-        addToRequestQueue(jsonObjRequest);
-    }
-
-    public void makeStringRequest(final TextView displayTextView)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
+        HashMap<String, String> params = new HashMap<String,String>();
+        params.put("email", email);
+        params.put("password", password);
+        PHPRequest phpRequest = new PHPRequest(UrlHolder.signInUrl, params,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response)
                     {
-                        displayTextView.setText("Response: " + response.substring(0,500));
+                        if(response.equals("success"))
+                        {
+                            activity.startMainFeedActivity();
+                        }
+                        else if(response.equals(null))//this should never be called, I'll leave it anyway just to be sure
+                        {
+                            Log.e(TAG, "No Response from Server");
+                            Toast.makeText(activity.getApplicationContext(), "Error: no Response from Server", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Log.e("Response: ", response);
+                            Toast.makeText(activity.getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                            //response holds the error message the PHP script echos. It gets logged and shown on screen via a Toast
+                        }
                     }
                 },
                 new Response.ErrorListener()
@@ -127,11 +104,56 @@ public class VolleyAdapter //Singleton class
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        displayTextView.setText("An error occurred");
+                        Log.e(TAG, error.toString());
+                        Toast.makeText(activity.getApplicationContext(), "A Network-Error occurred" , Toast.LENGTH_LONG).show();
                     }
                 }
         );
-        addToRequestQueue(stringRequest);
+        addToRequestQueue(phpRequest);
+    }
+
+    public void signUserUp(final SignUpActivity activity, String nickname, String email, String password)
+    {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("nickname", nickname);
+        params.put("email", email);
+        params.put("password", password);
+
+
+        PHPRequest phpRequest = new PHPRequest(UrlHolder.signUpUrl, params,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        if(response.equals("success"))
+                        {
+                            activity.startMainFeedActivity();
+                        }
+                        else if(response.equals(null))
+                        {
+                            Log.e(TAG, "No Response from Server");
+                            Toast.makeText(activity.getApplicationContext(), "Error: no Response from Server", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Log.e("Response: ", response);
+                            Toast.makeText(activity.getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                            //response holds the error message the PHP script echos. It gets logged and shown on screen via a Toast
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Toast.makeText(activity.getApplicationContext(), "A Network-Error occurred" , Toast.LENGTH_LONG).show();
+                        Log.e(TAG, error.toString());
+                    }
+                }
+        );
+        addToRequestQueue(phpRequest);
     }
 
     /*

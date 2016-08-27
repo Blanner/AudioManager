@@ -51,6 +51,14 @@
         android:singleLine="true"
         android:hint="@string/email_hint"/>
 
+    <EditText
+        android:id="@+id/editText_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/editText_email"
+        android:singleLine="true"
+        android:hint="@string/nickname_hint"/>
+
     <ImageView
         android:id="@+id/imgView_settings"
         android:src="@mipmap/settings_gear_symbol"

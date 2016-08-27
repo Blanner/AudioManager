@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import bll.scg.de.audiomanager.R;
 import bll.scg.de.audiomanager.application.UrlHolder;
+import bll.scg.de.audiomanager.util.VolleyAdapter;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -35,14 +36,22 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        //Retrieve views
+    /*
+     * Retrieve Views
+     */
+
         textView_linkToSignUp = (TextView) findViewById(R.id.textView_signUp);
         btn_signIn = (Button) findViewById(R.id.btn_signIn);
         btn_continueFree = (Button) findViewById(R.id.btn_continueFree);
         imgView_settings = (ImageView) findViewById(R.id.imgView_settings);
-        rl_signin = (RelativeLayout) findViewById(R.id.rl_signIn);
 
-        //Register Listeners
+        final EditText editText_email = (EditText) findViewById(R.id.editText_email);
+        final EditText editText_pw = (EditText) findViewById(R.id.editText_pw);
+
+    /*
+     * Define Listeners
+     */
+
         //1.TextView Listener
         View.OnClickListener twListener = new View.OnClickListener()
         {
@@ -53,24 +62,28 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+
         //2.Sign In Button listener
         View.OnClickListener signInListener = new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                finish();
+                //call signUserIn @VolleyAdapter singleton
+                VolleyAdapter.getInstance(getApplicationContext()).signUserIn(SignInActivity.this, editText_email.getText().toString(), editText_pw.getText().toString());
             }
         };
+
         //3.Continue Free Button Listener
         View.OnClickListener continueFreeListener = new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                finish();
+                startMainFeedActivity();
             }
         };
+
         //4. Settings Listener
         View.OnClickListener settingsListener = new View.OnClickListener()
         {
@@ -82,11 +95,19 @@ public class SignInActivity extends AppCompatActivity {
             }
         };
 
-        //set Listeners
+    /*
+     * Set Listeners
+     */
         textView_linkToSignUp.setOnClickListener(twListener);
         btn_signIn.setOnClickListener(signInListener);
         btn_continueFree.setOnClickListener(continueFreeListener);
         imgView_settings.setOnClickListener(settingsListener);
 
+    }
+
+    public void startMainFeedActivity()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainFeedActivity.class);
+        startActivity(intent);
     }
 }
