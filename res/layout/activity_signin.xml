@@ -16,59 +16,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentEnd="true"/>
 
-    <RelativeLayout
+    <EditText
+        android:id="@+id/editText_email"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/imgView_settings"
+        android:layout_marginTop="60dp"
+        android:singleLine="true"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_hint" />
+
+    <EditText
+        android:id="@+id/editText_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_email"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:hint="@string/pw_hint" />
+
+    <Button
+        android:id="@+id/btn_signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in"
+        android:layout_below="@id/editText_pw"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_continueFree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btn_signIn"
+        android:layout_toStartOf="@id/btn_signIn"
+        android:text="@string/continue_free"
+        android:layout_marginEnd="10dp"/>
+
+    <TextView
+        android:id="@+id/textView_signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-
-        <TextView
-            android:id="@+id/textView_signUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:paddingTop="10dp"
-            android:text="@string/sign_up"
-            android:textIsSelectable="true"/>
-
-        <Button
-            android:id="@+id/btn_signIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            android:layout_above="@id/textView_signUp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"/>
-
-        <Button
-            android:id="@+id/btn_continueFree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/btn_signIn"
-            android:layout_toLeftOf="@id/btn_signIn"
-            android:text="@string/continue_free"
-            android:layout_marginRight="10dp"/>
-
-        <EditText
-            android:id="@+id/editText_pw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btn_signIn"
-            android:singleLine="true"
-            android:hint="@string/pw_hint"/>
-
-        <EditText
-            android:id="@+id/editText_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/editText_pw"
-            android:singleLine="true"
-            android:hint="@string/email_hint"/>
-
-    </RelativeLayout>
+        android:layout_below="@id/btn_continueFree"
+        android:paddingTop="20dp"
+        android:text="@string/sign_up"
+        android:textIsSelectable="true"/>
 
 </RelativeLayout>
