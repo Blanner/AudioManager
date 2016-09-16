@@ -10,4 +10,7 @@
     <string name="enter_ip">Please enter ip-address</string>
     <string name="enter_ip_hint">Enter ip-address</string>
     <string name="set_ip">Set ip-address</string>
+
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
 </resources>

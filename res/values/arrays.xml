@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="sample_titles">
+        <item>Sample #1</item>
+        <item>Sample #2</item>
+        <item>Sample #3</item>
+        <item>Sample #4</item>
+        <item>Sample #5</item>
+    </array>
+
+</resources>
