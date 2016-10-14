@@ -1,6 +1,5 @@
 package bll.scg.de.audiomanager.activity;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -35,7 +34,7 @@ public class MainFeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_feed);
 
         mTitle = mDrawerTitle = getTitle();
-        mSampleTitles = getResources().getStringArray(R.array.sample_titles);
+        mSampleTitles = getResources().getStringArray(R.array.drawer_item_titles);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.listView_leftDrawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +58,7 @@ public class MainFeedActivity extends AppCompatActivity {
                             }
                         };
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, /*R.layout.drawer_list_item,*/ R.layout.activity_main_feed));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navdrawer_textview, mSampleTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);

@@ -7,13 +7,13 @@ import android.util.Log;
  */
 public class UrlHolder
 {
-    private static String mCurrentIP = "192.168.104.63";
+    private static String mCurrentIP = "192.168.104.64";
     private static String mBaseIp = "192.168.104";
     public static final String TAG = UrlHolder.class.getSimpleName();
 
-    public static String testImageUrl = "http://192.168.104.63/android_files/test_images/ic_launcher.png";
-    public static String signUpUrl = "http://192.168.104.63/android_audiomanager_scripts/signup.php";
-    public static String signInUrl = "http://192.168.104.63/android_audiomanager_scripts/signin.php";
+    public static String testImageUrl = "http://192.168.104.64/android_files/test_images/ic_launcher.png";
+    public static String signUpUrl = "http://192.168.104.64/android_audiomanager_scripts/signup.php";
+    public static String signInUrl = "http://192.168.104.64/android_audiomanager_scripts/signin.php";
 
     public static boolean setIP(String ip)
     {
