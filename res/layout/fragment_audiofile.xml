@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_audiofile"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff2f2f2"
+    android:padding="10dp"
+    android:layout_margin="10dp">
+
+    <ImageButton
+        android:id="@+id/imgBtn_thumbnail"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/missing_image"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <ImageButton
+        android:id="@+id/imgBtn_play"
+        android:layout_width="60dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/play"
+        android:background="#fff2f2f2"
+        android:layout_below="@id/imgBtn_thumbnail"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TitleTitleTitleTitleTitleTitleTitleTitleTitleTitle"
+        android:textColor="@color/black"
+        android:textSize="28dp"
+        android:layout_alignTop="@id/imgBtn_thumbnail"
+        android:layout_toEndOf="@id/imgBtn_thumbnail"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/tw_currTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CurrTime"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_alignTop="@id/imgBtn_play"
+        android:layout_toEndOf="@id/imgBtn_play"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"/>
+
+    <TextView
+        android:id="@+id/textView_timeDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_alignTop="@id/tw_currTime"
+        android:layout_toEndOf="@id/tw_currTime"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="totalTime"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_alignTop="@+id/textView_timeDivider"
+        android:layout_toEndOf="@+id/textView_timeDivider"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Download file"
+        android:textSize="20dp"
+        android:layout_below="@id/imgBtn_play"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

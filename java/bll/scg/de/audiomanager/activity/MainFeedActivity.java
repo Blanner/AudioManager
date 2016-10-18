@@ -1,18 +1,26 @@
 package bll.scg.de.audiomanager.activity;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import bll.scg.de.audiomanager.R;
+import bll.scg.de.audiomanager.application.AudioFileFragment;
 import bll.scg.de.audiomanager.util.DrawerItemClickListener;
 
 /**
@@ -22,6 +30,7 @@ public class MainFeedActivity extends AppCompatActivity {
 
     private String[] mSampleTitles;
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mContentFrame;
     private ListView mDrawerList;
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -32,6 +41,10 @@ public class MainFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_feed);
+
+        /*
+         * Drawer and Action Bar
+         */
 
         mTitle = mDrawerTitle = getTitle();
         mSampleTitles = getResources().getStringArray(R.array.drawer_item_titles);
@@ -66,7 +79,39 @@ public class MainFeedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        /*
+         * Content ListView
+         */
+
+        mContentFrame = (LinearLayout) findViewById(R.id.linearLayout_contentFrame);
+        for(int i = 0; i < 10; i++)
+        {
+            addAudioFragments();
+        }
     }
+
+    protected void addAudioFragments()
+    {
+        //get the Fragment Manager to begin a transaction (adding fragments)
+        FragmentManager fragmentManager = getFragmentManager();
+        //Start new Fragment Transaction
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //create Fragment
+        AudioFileFragment audioFileFragment = new AudioFileFragment();
+        //add Fragment
+        fragmentTransaction.add(R.id.linearLayout_contentFrame, audioFileFragment);
+
+        //makes Transaction revertible (null -> no name)
+        fragmentTransaction.addToBackStack(null);
+        //executes Transaction
+        fragmentTransaction.commit();
+    }
+
+
+    /*
+     * SupportActionBar inherited methods
+     */
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState)

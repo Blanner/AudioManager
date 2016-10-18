@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/imgView_settings"
-            android:src="@mipmap/settings_gear_symbol"
+            android:src="@drawable/settings_gear_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

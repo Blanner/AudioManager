@@ -25,19 +25,23 @@
         android:layout_height="match_parent">
 
         <!-- Activitys Main Content -->
-        <ListView
-            android:id="@+id/listView_contentFrame"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="10dp"/>
+            android:paddingTop="10dp">
 
-        <TextView
-            android:id="@+id/textView_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/no_data"
-            android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:id="@+id/linearLayout_contentFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <!-- navigation drawer-->
         <ListView
