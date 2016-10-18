@@ -8,19 +8,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import bll.scg.de.audiomanager.R;
 import bll.scg.de.audiomanager.application.AudioFileFragment;
+import bll.scg.de.audiomanager.util.CustomScrollView;
 import bll.scg.de.audiomanager.util.DrawerItemClickListener;
 
 /**
@@ -30,13 +26,13 @@ public class MainFeedActivity extends AppCompatActivity {
 
     private String[] mSampleTitles;
     private DrawerLayout mDrawerLayout;
-    private LinearLayout mContentFrame;
     private ListView mDrawerList;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
+    private CustomScrollView mCustomScrollView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,17 +77,26 @@ public class MainFeedActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         /*
-         * Content ListView
+         * Content CustomScrollView
          */
+        mCustomScrollView = (CustomScrollView) findViewById(R.id.cScrollView_contentFrame);
+        mCustomScrollView.setMainFeedActivity(this);
+        addAudioFragments(5);
+    }
 
-        mContentFrame = (LinearLayout) findViewById(R.id.linearLayout_contentFrame);
-        for(int i = 0; i < 10; i++)
+    /*
+     * Fragment Methods
+     */
+
+    public void addAudioFragments(int count)
+    {
+        for(int i = 0; i<count; i++)
         {
-            addAudioFragments();
+            addAudioFragment();
         }
     }
 
-    protected void addAudioFragments()
+    private void addAudioFragment()
     {
         //get the Fragment Manager to begin a transaction (adding fragments)
         FragmentManager fragmentManager = getFragmentManager();
