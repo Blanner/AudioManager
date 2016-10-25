@@ -18,6 +18,7 @@ import bll.scg.de.audiomanager.R;
 import bll.scg.de.audiomanager.application.AudioFileFragment;
 import bll.scg.de.audiomanager.util.CustomScrollView;
 import bll.scg.de.audiomanager.util.DrawerItemClickListener;
+import bll.scg.de.audiomanager.util.VolleyAdapter;
 
 /**
  * Created by Simon C. Gorissen on 19.08.2016.
@@ -33,70 +34,30 @@ public class MainFeedActivity extends AppCompatActivity {
     private CharSequence mTitle;
 
     private CustomScrollView mCustomScrollView;
+    private boolean isAddingFragments = false;
+    private int lastFragmentID = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_feed);
 
-        /*
-         * Drawer and Action Bar
-         */
-
-        mTitle = mDrawerTitle = getTitle();
-        mSampleTitles = getResources().getStringArray(R.array.drawer_item_titles);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.listView_leftDrawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  R.string.drawer_open, R.string.drawer_close)
-                        {
-                            /** Called when a drawer has settled in a completely closed state. */
-                            public void onDrawerClosed(View view)
-                            {
-                                super.onDrawerClosed(view);
-                                getSupportActionBar().setTitle(mTitle);
-                                invalidateOptionsMenu();//create call to onPrepareOptionMenu()
-                            }
-
-                            /** Called when a drawer has settled in a completely open state. */
-                            public void onDrawerOpened(View drawerView)
-                            {
-                                super.onDrawerOpened(drawerView);
-                                getSupportActionBar().setTitle(mDrawerTitle);
-                                invalidateOptionsMenu();//create call to onPrepareOptionMenu()
-                            }
-                        };
-
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navdrawer_textview, mSampleTitles));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        /*
-         * Content CustomScrollView
-         */
-        mCustomScrollView = (CustomScrollView) findViewById(R.id.cScrollView_contentFrame);
-        mCustomScrollView.setMainFeedActivity(this);
-        addAudioFragments(5);
+        initActionBarAndDrawer();
+        initCustomScrollView();
     }
 
     /*
      * Fragment Methods
      */
 
-    public void addAudioFragments(int count)
+    public void addAudioFragments(int newLastFragmentID)
     {
-        for(int i = 0; i<count; i++)
+        for(int i = lastFragmentID+1; i <= newLastFragmentID; i++)
         {
-            addAudioFragment();
+            addAudioFragment(i);
         }
     }
 
-    private void addAudioFragment()
+    private void addAudioFragment(int tableEntryID)
     {
         //get the Fragment Manager to begin a transaction (adding fragments)
         FragmentManager fragmentManager = getFragmentManager();
@@ -107,12 +68,62 @@ public class MainFeedActivity extends AppCompatActivity {
         //add Fragment
         fragmentTransaction.add(R.id.linearLayout_contentFrame, audioFileFragment);
 
+        //Request & set Data for fragment from Database
+        VolleyAdapter.getInstance(getApplicationContext()).setFragmentContent(this, audioFileFragment, tableEntryID);
+
         //makes Transaction revertible (null -> no name)
         fragmentTransaction.addToBackStack(null);
         //executes Transaction
         fragmentTransaction.commit();
     }
 
+    /*
+     * private init-methods
+     */
+
+    private void initActionBarAndDrawer()
+    {
+        mTitle = mDrawerTitle = getTitle();
+        mSampleTitles = getResources().getStringArray(R.array.drawer_item_titles);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.listView_leftDrawer);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,  R.string.drawer_open, R.string.drawer_close)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view)
+            {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();//create call to onPrepareOptionMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu();//create call to onPrepareOptionMenu()
+            }
+        };
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.navdrawer_textview, mSampleTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void initCustomScrollView()
+    {
+        mCustomScrollView = (CustomScrollView) findViewById(R.id.cScrollView_contentFrame);
+        mCustomScrollView.setMainFeedActivity(this);
+        addAudioFragments(5);
+    }
 
     /*
      * SupportActionBar inherited methods

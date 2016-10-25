@@ -29,8 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bll.scg.de.audiomanager.R;
+import bll.scg.de.audiomanager.activity.MainFeedActivity;
 import bll.scg.de.audiomanager.activity.SignInActivity;
 import bll.scg.de.audiomanager.activity.SignUpActivity;
+import bll.scg.de.audiomanager.application.AudioFileFragment;
 import bll.scg.de.audiomanager.application.UrlHolder;
 
 /**
@@ -42,7 +44,6 @@ public class VolleyAdapter //Singleton class
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-
 
     private static VolleyAdapter mInstance;
     private static Context mContext;
@@ -60,6 +61,10 @@ public class VolleyAdapter //Singleton class
 
     }
 
+    /*
+     * Getters
+     */
+
     //Instance Getter
     public static synchronized VolleyAdapter getInstance(Context context)
     {
@@ -70,13 +75,21 @@ public class VolleyAdapter //Singleton class
         return mInstance;
     }
 
+    public ImageLoader getImageLoader()
+    {
+        return mImageLoader;
+    }
+
+    /*
+     * Request Methods
+     */
 
     public void signUserIn(final SignInActivity activity, String email, String password)
     {
         HashMap<String, String> params = new HashMap<String,String>();
         params.put("email", email);
         params.put("password", password);
-        PHPRequest phpRequest = new PHPRequest(UrlHolder.signInUrl, params,
+        PHPRequest phpRequest = new PHPRequest(UrlHolder.getSignInUrl(), params,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -105,7 +118,7 @@ public class VolleyAdapter //Singleton class
                     public void onErrorResponse(VolleyError error)
                     {
                         Log.e(TAG, error.toString());
-                        Toast.makeText(activity.getApplicationContext(), "A Network-Error occurred" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), "A Volley-Network-Error occurred" , Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -120,7 +133,7 @@ public class VolleyAdapter //Singleton class
         params.put("password", password);
 
 
-        PHPRequest phpRequest = new PHPRequest(UrlHolder.signUpUrl, params,
+        PHPRequest phpRequest = new PHPRequest(UrlHolder.getSignUpUrl(), params,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -148,7 +161,7 @@ public class VolleyAdapter //Singleton class
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        Toast.makeText(activity.getApplicationContext(), "A Network-Error occurred" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), "A Volley-Network-Error occurred" , Toast.LENGTH_LONG).show();
                         Log.e(TAG, error.toString());
                     }
                 }
@@ -156,9 +169,63 @@ public class VolleyAdapter //Singleton class
         addToRequestQueue(phpRequest);
     }
 
+    public void setFragmentContent(final MainFeedActivity activity, final AudioFileFragment fragment, int tableEntryID)
+    {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("tableEntryID", ""+tableEntryID);//put("Key", value);
+        /* The Map passed to Volley as Post-Parameters must be a <String, String>-map to work with the Request superclass
+         * the int type doesn't have a toString() method, therefor it is converted via a String-hitch -> ""+
+         */
+
+        //Title Request
+       ParamStringRequest titleRequest = new ParamStringRequest(UrlHolder.getTitleUrl(), params,
+               new Response.Listener<String>()
+               {
+                  @Override
+                  public void onResponse(String response)
+                  {
+                      if(response.startsWith("success|"))
+                      {
+                          String[] splitResponse = response.split("[|]");//[] needs to be used because | is a special character
+                          String title = splitResponse[1].trim();
+                          fragment.setTitle(title);
+                      }
+                      else if(response.equals(null))
+                      {
+                          Log.e(TAG, "No Response from Server");
+                          Toast.makeText(activity.getApplicationContext(), "Error: no Response from Server", Toast.LENGTH_LONG).show();
+                      }
+                      else
+                      {
+                          Log.e("Response: ", response);
+                          Toast.makeText(activity.getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                      }
+                  }
+               },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Toast.makeText(activity.getApplicationContext(), "A Volley-Network-Error occurred" , Toast.LENGTH_LONG).show();
+                        Log.e(TAG, error.toString());
+                    }
+                });
+
+        //length
+
+
+        //Download-Link
+
+
+        //ThumbnailLink
+
+    }
+
     /*
      *  RequestQueue Managing Methods
      */
+
     public RequestQueue getRequestQueue()
     {
         if(mRequestQueue == null)
@@ -173,13 +240,7 @@ public class VolleyAdapter //Singleton class
         getRequestQueue().add(req);
     }
 
-    /*
-     * additional Getters
-     */
-    public ImageLoader getImageLoader()
-    {
-        return mImageLoader;
-    }
+
 }
 
 

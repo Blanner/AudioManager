@@ -24,7 +24,7 @@ public class CustomScrollView extends ScrollView
     /*
      * Fields
      */
-    private float screenWidth;
+
     private float screenHeight;
     private MainFeedActivity feedActivity;
 
@@ -63,25 +63,28 @@ public class CustomScrollView extends ScrollView
     private void initMetrics()
     {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
     }
+
+    /*
+     * Callbacks
+     */
 
     @Override
     public void onScrollChanged(int l, int t, int oldl, int oldt)
     {
-        Log.d("CustomScrollView","onScrollChanged");
+        //Log.d("CustomScrollView","onScrollChanged");
         super.onScrollChanged(l, t, oldl, oldt);
-        int scrollY = getScrollY();
-        /*Log.d("CustomScrollView","Scroll Y: " + scrollY);
-        Log.d("CustomScrollView", "Top Y: " + getTopY());
-        Log.d("CustomScrollView", "DocumentHeight: " + getDocumentHeight());
-        Log.d("CustomScrollView", "ScreenHeight: " + screenHeight);*/
+        //Log.d("CustomScrollView","Scroll Y: " + scrollY);
+        //Log.d("CustomScrollView", "Top Y: " + getTopY());
+        //Log.d("CustomScrollView", "DocumentHeight: " + getDocumentHeight());
+        //Log.d("CustomScrollView", "ScreenHeight: " + screenHeight);
 
-        if((getTopY() +  2*screenHeight) >= getDocumentHeight()) //end of fragment list is reached if user scrolls down by one screen height or less
+        if((getTopY() +  2*screenHeight) >= getDocumentHeight()) //end of fragment list is about to be reached
         {
             feedActivity.addAudioFragments(5);
         }
+
     }
 
     /*

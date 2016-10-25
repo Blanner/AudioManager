@@ -1,13 +1,12 @@
 package bll.scg.de.audiomanager.application;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import bll.scg.de.audiomanager.R;
 
@@ -18,8 +17,11 @@ import bll.scg.de.audiomanager.R;
 
 public class AudioFileFragment extends Fragment
 {
-    private ImageButton playButton;
-    private Boolean playback = false;
+    private ImageButton imgBtn_play;
+    private TextView textView_length;
+    private TextView textView_title;
+    private Boolean mPlayback = false;
+    private String mDownloadLink;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -36,27 +38,53 @@ public class AudioFileFragment extends Fragment
          * Play/Pause Button
          */
 
-        playButton = (ImageButton) getView().findViewById(R.id.imgBtn_play);
-        playButton.setOnClickListener(new View.OnClickListener()
+        imgBtn_play = (ImageButton) getView().findViewById(R.id.imgBtn_play);
+        imgBtn_play.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                if(!playback) //Audio File is playing
+                if(!mPlayback) //Audio File is playing
                 {
-                    playButton.setImageResource(R.drawable.pause);
-                    playback = true;
+                    imgBtn_play.setImageResource(R.drawable.pause);
+                    mPlayback = true;
                     //TODO stop playback / stream
                 }
                 else //Audio File is paused
                 {
-                    playButton.setImageResource(R.drawable.play);
-                    playback = false;
+                    imgBtn_play.setImageResource(R.drawable.play);
+                    mPlayback = false;
                     //TODO start playback / stream
                 }
             }
         });
+
+        /*
+         * Network-set Views
+         */
+        textView_length = (TextView) getView().findViewById(R.id.textView_length);
+        textView_title = (TextView) getView().findViewById(R.id.textView_title);
     }
 
+    /*
+     * Setters
+     */
 
+    public void setTitle(String title)
+    {
+        textView_title.setText(title);
+    }
+
+    public void setLength(int lengthInSeconds)
+    {
+        int hours =  lengthInSeconds / 60*60;
+        int minutes = (lengthInSeconds - hours * 60 * 60) / 60;
+        int seconds = lengthInSeconds % 60;
+        textView_length.setText(hours + ":" + minutes + ":" + seconds);
+    }
+
+    public void setDownloadLink(String link)
+    {
+        mDownloadLink = link;
+    }
 }
